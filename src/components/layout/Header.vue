@@ -78,7 +78,7 @@ export default {
 
     const username = computed(() => {
       let userInfo = getSession("userInfo")
-      return userInfo.username || state.name
+      return userInfo ? userInfo.username : state.name
     })
 
     const collapse = computed(() => {
