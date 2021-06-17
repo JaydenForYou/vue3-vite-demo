@@ -17,14 +17,23 @@ import localeZH from 'element-plus/lib/locale/lang/zh-cn'
 import localeEN from 'element-plus/lib/locale/lang/en'
 import messages from '@/utils/i18n'
 import {store} from "@/store"
+import mitt from 'mitt'
 
 const app = createApp(App)
+
+// mitt bus
+app.config.globalProperties.mittBus = mitt()
+
+// i18n
 const i18n = createI18n({
   locale: localeZH.name,
   fallbackLocale: localeEN.name,
   messages,
 })
+
+// 加载ElementPlus
 installElementPlus(app)
+
 app
   .use(store)
   .use(router)
