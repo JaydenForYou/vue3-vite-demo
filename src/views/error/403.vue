@@ -12,12 +12,19 @@
 </template>
 
 <script>
+import {useRouter} from "vue-router"
+
 export default {
-  methods: {
-    goBack() {
-      this.$router.go(-1)
+  setup() {
+    const router = useRouter()
+    const goBack = () => {
+      router.go(-1)
     }
-  }
+
+    return {
+      goBack
+    }
+  },
 }
 </script>
 
