@@ -9,6 +9,7 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 import storage from '@/utils/storage.js'
 import {store} from "@/store"
+import {NextLoading} from "@/utils/loading"
 
 const {
   getSession
@@ -56,6 +57,23 @@ export const router = createRouter({
   history: createWebHashHistory(),
   routes // `routes: routes` 的缩写
 })
+
+// 定义404界面
+const pathMatch = {
+  path: '/:path(.*)*',
+  redirect: '/404',
+}
+
+// 前端控制路由：初始化方法，防止刷新时丢失
+export function initAllFun() {
+  const token = getSession('token') // 获取浏览器缓存 token 值
+  if (!token) return false // 无 token 停止执行下一步
+  store.dispatch('User/setUserInfo') // 触发初始化用户信息
+  store.dispatch('Login/setLoginStatus', true)
+  router.addRoute(pathMatch) // 添加404界面
+}
+initAllFun()
+
 
 // 登录状态保持和限制
 router.beforeEach((to, from, next) => {

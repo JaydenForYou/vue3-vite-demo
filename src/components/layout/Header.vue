@@ -62,6 +62,8 @@ export default {
     // 用户名下拉菜单选择事件
     const handleCommand = (command) => {
       if (command === "loginOut") {
+        store.commit('Login/setLogin', false)
+        proxy.customStorage.clearSession()
         proxy.$router.push('/login')
       }
     }
