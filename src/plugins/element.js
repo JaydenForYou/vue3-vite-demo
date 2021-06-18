@@ -13,7 +13,7 @@ import {
   ElSubmenu,
   ElMenuItem,
   ElButton,
-  ElDropdownItem
+  ElDropdownItem, ElCol, ElRow, ElCard, ElTable, ElTableColumn, ElProgress, ElCheckbox
 } from 'element-plus'
 
 export default (app) => {
@@ -26,4 +26,11 @@ export default (app) => {
     .use(ElSubmenu)
     .use(ElMenuItem)
     .use(ElDropdownItem)
+    .use(ElCol)
+    .use(ElRow)
+    .use(ElCard)
+    .use(ElTable)
+    .use(ElTableColumn)
+    .use(ElProgress)
+    .use(ElCheckbox)
 }

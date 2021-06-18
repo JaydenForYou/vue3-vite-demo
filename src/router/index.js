@@ -37,7 +37,7 @@ export const routes = [
         meta: {
           title: '系统首页'
         },
-        component: () => import('@/components/HelloWorld.vue')
+        component: () => import('@/views/dashboard/index.vue')
       },
       {
         path: '/:pathMatch(.*)',

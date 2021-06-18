@@ -18,6 +18,7 @@ import localeEN from 'element-plus/lib/locale/lang/en'
 import messages from '@/utils/i18n'
 import {store} from "@/store"
 import mitt from 'mitt'
+import storage from "@/utils/storage"
 
 const app = createApp(App)
 
