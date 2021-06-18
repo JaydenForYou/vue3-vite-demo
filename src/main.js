@@ -23,6 +23,7 @@ const app = createApp(App)
 
 // mitt bus
 app.config.globalProperties.mittBus = mitt()
+app.config.globalProperties.customStorage = storage
 
 // i18n
 const i18n = createI18n({
