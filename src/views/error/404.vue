@@ -12,9 +12,10 @@
 </template>
 
 <script>
+import {defineComponent} from 'vue'
 import {useRouter} from 'vue-router'
 
-export default {
+export default defineComponent({
   setup() {
     const router = useRouter()
     const goBack = () => {
@@ -24,8 +25,8 @@ export default {
     return {
       goBack
     }
-  },
-}
+  }
+})
 </script>
 
 
