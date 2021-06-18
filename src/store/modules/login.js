@@ -20,7 +20,7 @@ export default {
     }
   },
   actions: {
-    setLoginStatus({commit}, flag) {
+    async setLoginStatus({commit}, flag) {
       commit("setLogin", flag)
     }
   }

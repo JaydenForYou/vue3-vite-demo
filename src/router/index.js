@@ -9,7 +9,6 @@
 import {createRouter, createWebHashHistory} from 'vue-router'
 import storage from '@/utils/storage.js'
 import {store} from "@/store"
-import {NextLoading} from "@/utils/loading"
 
 const {
   getSession
