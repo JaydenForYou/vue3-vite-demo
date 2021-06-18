@@ -8,10 +8,12 @@
 import {createStore} from "vuex"
 import login from "@/store/modules/login"
 import layout from "@/store/modules/layout"
+import user from '@/store/modules/user'
 
 export const store = createStore({
   modules: {
     Login: login,
-    Layout: layout
+    Layout: layout,
+    User: user
   }
 })
