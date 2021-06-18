@@ -2,7 +2,7 @@
   <div v-if="showTags" class="tags">
     <ul>
       <li
-          v-for="(item,index) in tagsList"
+          v-for="(item,index) in state.tagsList"
           :key="index"
           class="tags-li"
           :class="{'active': isActive(item.path)}"
@@ -32,62 +32,33 @@
 
 <script>
 import {store} from "@/store"
+import {useRoute, useRouter} from 'vue-router'
+import {computed, defineComponent, onMounted, reactive, watch} from "vue"
 
-export default {
-  computed: {
-    tagsList() {
-      return store.state.Layout.tagsList
-    },
-    showTags() {
-      return this.tagsList.length > 0
-    }
-  },
-  watch: {
-    $route(newValue) {
-      this.setTags(newValue)
-    }
-  },
-  created() {
-    this.setTags(this.$route)
-  },
-  methods: {
-    isActive(path) {
-      return path === this.$route.fullPath
-    },
-    // 关闭单个标签
-    closeTags(index) {
-      const delItem = this.tagsList[index]
-      store.commit("Layout/delTagsItem", {index})
-      const item = this.tagsList[index] ? this.tagsList[index] : this.tagsList[index - 1]
-      if (item) {
-        delItem.path === this.$route.fullPath &&
-        this.$router.push(item.path)
-      } else {
-        this.$router.push("/")
-      }
-    },
-    // 关闭全部标签
-    closeAll() {
-      store.commit("Layout/clearTags")
-      this.$router.push("/")
-    },
-    // 关闭其他标签
-    closeOther() {
-      const curItem = this.tagsList.filter(item => {
-        return item.path === this.$route.fullPath
-      })
-      store.commit("Layout/closeTagsOther", curItem)
-    },
-    // 设置标签
-    setTags(route) {
+export default defineComponent({
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+
+    // 初始化变量
+    const state = reactive({
+      tagsList: computed(() => store.state.Layout.tagsList),
+    })
+
+    // 是否展示标签
+    const showTags = computed(() => state.tagsList.length > 0)
+
+    // 设置标签路由信息
+    const setTags = (route) => {
       if (!route.name) {
         return
       }
-      const isExist = this.tagsList.some(item => {
+      const isExist = state.tagsList.some(item => {
         return item.path === route.fullPath
       })
+
       if (!isExist) {
-        if (this.tagsList.length >= 8) {
+        if (state.tagsList.length >= 8) {
           store.commit("Layout/delTagsItem", {index: 0})
         }
         store.commit("Layout/setTagsItem", {
@@ -96,12 +67,66 @@ export default {
           path: route.fullPath
         })
       }
-    },
-    handleTags(command) {
-      command === "other" ? this.closeOther() : this.closeAll()
+    }
+
+    // 关闭单个标签
+    const closeTags = (index) => {
+      const delItem = this.tagsList[index]
+      store.commit("Layout/delTagsItem", {index})
+      const item = state.tagsList[index] ? state.tagsList[index] : state.tagsList[index - 1]
+      if (item) {
+        delItem.path === route.fullPath &&
+        this.$router.push(item.path)
+      } else {
+        this.$router.push("/")
+      }
+    }
+
+    const isActive = (path) => {
+      return path === route.fullPath
+    }
+
+    // 关闭全部标签
+    const closeAll = () => {
+      store.commit("Layout/clearTags")
+      router.push('/')
+    }
+    // 关闭其他标签
+    const closeOther = () => {
+      const curItem = state.tagsList.filter(item => {
+        return item.path === route.fullPath
+      })
+      store.commit("Layout/closeTagsOther", curItem)
+    }
+
+    const handleTags = (command) => {
+      command === "other" ? closeOther() : closeAll()
+    }
+
+    onMounted(() => {
+      // 设置当前标签路由信息
+      setTags(route)
+    })
+
+    // 监听路由回调
+    watch(
+        () => route.path,
+        () => {
+          setTags(route)
+        }
+    )
+
+    return {
+      state,
+      closeTags,
+      isActive,
+      closeOther,
+      closeAll,
+      handleTags,
+      showTags
     }
   }
-}
+})
 </script>
 
 
